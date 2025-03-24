@@ -1,0 +1,92 @@
+<definitions name="ContactAddressService"
+    targetNamespace="http://example.com/contactaddress"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://example.com/contactaddress"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
+    <!-- Definisi data type -->
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://example.com/contactaddress">
+            
+            <complexType name="Contact">
+                <sequence>
+                    <element name="id" type="xsd:int"/>
+                    <element name="first_name" type="xsd:string"/>
+                    <element name="last_name" type="xsd:string"/>
+                    <element name="email" type="xsd:string"/>
+                    <element name="phone" type="xsd:string"/>
+                </sequence>
+            </complexType>
+
+            <complexType name="Address">
+                <sequence>
+                    <element name="id" type="xsd:int"/>
+                    <element name="street" type="xsd:string"/>
+                    <element name="city" type="xsd:string"/>
+                    <element name="province" type="xsd:string"/>
+                    <element name="country" type="xsd:string"/>
+                    <element name="postal_code" type="xsd:string"/>
+                </sequence>
+            </complexType>
+        </schema>
+    </types>
+
+    <!-- Definisi operasi layanan -->
+    <message name="GetContactRequest">
+        <part name="contactId" type="xsd:int"/>
+    </message>
+    <message name="GetContactResponse">
+        <part name="contact" type="tns:Contact"/>
+    </message>
+
+    <message name="GetAddressRequest">
+        <part name="addressId" type="xsd:int"/>
+    </message>
+    <message name="GetAddressResponse">
+        <part name="address" type="tns:Address"/>
+    </message>
+
+    <portType name="ContactAddressPortType">
+        <operation name="GetContact">
+            <input message="tns:GetContactRequest"/>
+            <output message="tns:GetContactResponse"/>
+        </operation>
+        <operation name="GetAddress">
+            <input message="tns:GetAddressRequest"/>
+            <output message="tns:GetAddressResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Definisi binding -->
+    <binding name="ContactAddressBinding" type="tns:ContactAddressPortType">
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetContact">
+            <soap:operation soapAction="GetContact"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetAddress">
+            <soap:operation soapAction="GetAddress"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Definisi service -->
+    <service name="ContactAddressService">
+        <port name="ContactAddressPort" binding="tns:ContactAddressBinding">
+            <soap:address location="http://localhost:8000/"/>
+        </port>
+    </service>
+</definitions>
